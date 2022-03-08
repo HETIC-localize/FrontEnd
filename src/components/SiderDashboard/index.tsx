@@ -1,17 +1,17 @@
-import { Layout } from 'antd';
-import { StyledLinkWrapper, StyledLink } from './styled';
+import { Layout } from "antd";
+import { StyledLinkWrapper, StyledLink } from "./styled";
 
 const { Sider } = Layout;
 
 const SiderDashboard = () => {
-    return (
+  return (
     <Sider>
-        <StyledLinkWrapper>
-          <StyledLink>Gestion de traduction</StyledLink>
-          <StyledLink>Gestion de compte</StyledLink>
-        </StyledLinkWrapper>
+      <StyledLinkWrapper>
+        <StyledLink>Gestion de traduction</StyledLink>
+        <StyledLink>Gestion de compte</StyledLink>
+      </StyledLinkWrapper>
     </Sider>
-    )
-}
+  );
+};
 
 export default SiderDashboard;
