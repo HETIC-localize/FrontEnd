@@ -1,11 +1,14 @@
-import React from 'react';
-import { Routes, Route, Link } from "react-router-dom";
-import Dashboard from './pages/Dashboard';
+import { Routes, Route } from "react-router-dom";
+import Login from './pages/Login';
+import TranslationDashboard from './pages/TranslationDashboard';
+import AccountDashboard from "./pages/AccountDashboard";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
+      <Route path="/" element={<Login />} />
+      <Route path="dashboard" element={<TranslationDashboard />} />
+      <Route path="account"  element={<AccountDashboard />}/>
     </Routes>
   );
 }

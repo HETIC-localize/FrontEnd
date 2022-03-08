@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { UserOutlined } from '@ant-design/icons';
-import { Modal } from 'antd';
+import { Modal, Avatar } from 'antd';
 
 import { StyledHeader, StyledProfileWrapper } from './styled';
 
@@ -11,7 +11,7 @@ const Header = () => {
         <StyledHeader>
             <StyledProfileWrapper>
                 <a onClick={() => setModal(true)}>
-                    <UserOutlined style={{ fontSize: '36px', color: '#08c' }}/>
+                    <Avatar size="large" icon={<UserOutlined />} />
                 </a>
                 <Modal
                     title="Nom utilisateur"

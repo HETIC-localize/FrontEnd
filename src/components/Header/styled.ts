@@ -8,6 +8,6 @@ export const StyledProfileWrapper = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-right: 20px;
     margin-top: 20px;
+    margin-right: 20px;
 `
