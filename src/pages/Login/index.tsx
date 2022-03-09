@@ -1,4 +1,3 @@
-import { Layout } from "antd";
 import styled from "styled-components";
 import { Input, Button } from "antd";
 
