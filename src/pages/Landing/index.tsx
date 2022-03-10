@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { Anchor } from "antd";
-
-const { Link } = Anchor;
+import { Link } from 'react-router-dom'
 
 const StyledWrapper = styled.div`
   display: flex;
@@ -14,13 +12,19 @@ const StyledWrapper = styled.div`
 const StyledLandingTitle = styled.h1`
   font-size: 56px;
 `;
+
+const StyledLandingLink = styled(Link)`
+    padding: 15px;
+    color: #8186a0;
+    text-decoration: none;
+    font-size: 18px;
+`;
+
 const Login = () => {
     return (
         <StyledWrapper>
             <StyledLandingTitle>Hetic</StyledLandingTitle>
-            <Anchor>
-                <Link href="/login" title="Connectez-vous" />
-            </Anchor>
+            <StyledLandingLink to="/login">Connectez-vous</StyledLandingLink>
         </StyledWrapper>
     );
 };
