@@ -7,8 +7,17 @@ export const StyledLinkWrapper = styled.div`
   align-items: baseline;
 `;
 
-export const StyledLink = styled.a`
+export const StyledLink = styled.div`
   color: white;
   margin-left: 20px;
   margin-bottom: 50px;
+  a {
+    color: #FFFFFF;
+  }
+  .is-active {
+    color: #40a9ff;
+  }
+  .anticon {
+    margin-right: 0.5rem;
+  }
 `;

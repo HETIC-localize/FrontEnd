@@ -1,16 +1,22 @@
 import React, { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Modal, Avatar } from "antd";
+import { Modal, Avatar, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 import { StyledHeader, StyledProfileWrapper } from "./styled";
 
 const Header = () => {
+  const navigate = useNavigate()
   const [modal, setModal] = useState(false);
+  const logout = () => {
+    localStorage.removeItem('tokenID');
+    navigate('/login')
+  }
 
   return (
     <StyledHeader>
       <StyledProfileWrapper>
-        <a onClick={() => setModal(true)}>
+        {/* <a onClick={() => setModal(true)}>
           <Avatar size="large" icon={<UserOutlined />} />
         </a>
         <Modal
@@ -23,7 +29,8 @@ const Header = () => {
           <p>some contents...</p>
           <p>some contents...</p>
           <p>some contents...</p>
-        </Modal>
+        </Modal> */}
+        <Button size="large" onClick={logout}>Logout</Button>
       </StyledProfileWrapper>
     </StyledHeader>
   );
