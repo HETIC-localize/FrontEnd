@@ -10,3 +10,7 @@ export const StyledInputWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const StyledTable = styled.div`
+  padding: 0 2rem;
+`

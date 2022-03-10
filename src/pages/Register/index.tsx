@@ -3,10 +3,9 @@ import { Input, Button, Select, Form, notification } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { StyledInput, StyledWrapper } from "styles/globals";
 import { StyledRegister, StyledRegisterTitle } from "./styled";
+import { registerUser } from "api/auth";
 
-const toto: any = process.env.REACT_APP_API_URL;
-
-type RegisterData = {
+export type RegisterData = {
   email: string;
   countries?: string[];
   company?: string;
@@ -18,18 +17,7 @@ const Register = () => {
   const onFinish = (values: RegisterData) => {
     setLoading(true);
     (async () => {
-      const rawResponse = await fetch(`${toto}/register`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-          countries: values.countries,
-          company: values.company,
-        }),
-      });
+      const rawResponse = await registerUser(values)
       const content = await rawResponse.json();
 
       if (rawResponse.status === 500) {
@@ -38,7 +26,7 @@ const Register = () => {
           description: content.detail,
         });
       } else if (rawResponse.status === 200) {
-        localStorage.setItem("tokenID", content.id);
+        localStorage.setItem("tokenID", content.email);
         navigate('/')
       }
       setLoading(false)

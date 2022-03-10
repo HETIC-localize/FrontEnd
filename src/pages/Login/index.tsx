@@ -3,35 +3,26 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { Button, Form, Input, notification } from "antd";
 import { StyledInput, StyledWrapper } from "styles/globals";
 import { StyledLogin, StyledLoginTitle } from "./styled";
+import { loginUser } from "api/auth";
 
 const Login = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const API_URL = process.env.REACT_APP_API_URL;
   const onFinish = (values: { email: string }) => {
     setLoading(true);
     (async () => {
-      const rawResponse = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: values.email,
-        }),
-      });
+      const rawResponse = await loginUser(values.email)
       const content = await rawResponse.json();
 
-      if (rawResponse.status === 500) {
+      if (rawResponse.status === 200) {
+        localStorage.setItem("tokenID", content.token);
+        navigate('/')
+      } else {
         notification.error({
           message: content.title,
           description: content.detail,
         });
-      } else if (rawResponse.status === 200) {
-        localStorage.setItem("tokenID", content.token);
-        navigate('/')
-      }
+      } 
       setLoading(false);
     })();
   };

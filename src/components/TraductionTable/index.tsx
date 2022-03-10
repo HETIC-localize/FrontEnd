@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { Table, Button } from "antd";
 import "antd/dist/antd.css";
 import columns from "./columns";
 import { Modal, Input } from "antd";
-import { StyledButtonWrapper, StyledInputWrapper } from "./styled";
+import { StyledButtonWrapper, StyledInputWrapper, StyledTable } from "./styled";
+import { loadAllTranslations } from "api/translations";
 
 const dataSource = [
   {
@@ -25,8 +26,13 @@ const dataSource = [
 const TraductionTable = () => {
   const [modal, setModal] = useState(false);
 
+  useEffect(() => {
+    const translations = async() => await loadAllTranslations()
+    translations()
+  }, [])
+
   return (
-    <React.Fragment>
+    <StyledTable>
       <StyledButtonWrapper>
         <Button type="primary" onClick={() => setModal(true)}>
           Ajouter un mot
@@ -45,7 +51,7 @@ const TraductionTable = () => {
         </Modal>
       </StyledButtonWrapper>
       <Table dataSource={dataSource} columns={columns} rowKey="id" />
-    </React.Fragment>
+    </StyledTable>
   );
 };
 
