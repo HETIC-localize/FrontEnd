@@ -1,58 +1,22 @@
 import { useState } from "react";
-import styled from "styled-components";
-import { Input, Button, Select, Form, Checkbox } from "antd";
-const { API_URl } = process.env;
-
-const StyledWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
-const StyledLogin = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 350px;
-  width: 350px;
-`;
-
-const StyledButton = styled(Button)`
-  margin-top: 20px;
-`;
-
-const StyledLoginTitle = styled.p`
-  font-size: 36px;
-`;
-
-const { Option } = Select;
-
-const handleChange = (value: any) => {
-  console.log(`selected ${value}`);
-};
+import { Input, Button, Select, Form, notification } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
+import { StyledInput, StyledWrapper } from "styles/globals";
+import { StyledRegister, StyledRegisterTitle } from "./styled";
 
 const toto: any = process.env.REACT_APP_API_URL;
-console.log(toto);
 
-const Login = () => {
-  const [email, setEmail] = useState("foo.bar@gmail.com");
-  const [countries, setCountries] = useState(["fr", "en"]);
-  const [company, setcompany] = useState("Hetic");
+type RegisterData = {
+  email: string;
+  countries?: string[];
+  company?: string;
+};
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
-  const validateForm = (
-    email: string,
-    countries: Array<string>,
-    companie?: string
-  ) => {
+const Register = () => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate()
+  const onFinish = (values: RegisterData) => {
+    setLoading(true);
     (async () => {
       const rawResponse = await fetch(`${toto}/register`, {
         method: "POST",
@@ -61,70 +25,108 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
-          countries: countries,
-          company: companie,
+          email: values.email,
+          countries: values.countries,
+          company: values.company,
         }),
       });
       const content = await rawResponse.json();
-      console.log(content);
+
+      if (rawResponse.status === 500) {
+        notification.error({
+          message: content.title,
+          description: content.detail,
+        });
+      } else if (rawResponse.status === 200) {
+        localStorage.setItem("tokenID", content.id);
+        navigate('/')
+      }
+      setLoading(false)
     })();
   };
+
+  // const onFinishFailed = (errorInfo: any) => {
+  //   console.log("Failed:", errorInfo);
+  // };
+
+  // const validateForm = (
+  //   email: string,
+  //   countries: Array<string>,
+  //   companie?: string
+  // ) => {
+  //   (async () => {
+  //     const rawResponse = await fetch(`${toto}/register`, {
+  //       method: "POST",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         email: email,
+  //         countries: countries,
+  //         company: companie,
+  //       }),
+  //     });
+  //     const content = await rawResponse.json();
+  //     console.log(content);
+  //   })();
+  // };
+
   return (
     <StyledWrapper>
-      <StyledLogin>
-        <StyledLoginTitle>Register</StyledLoginTitle>
+      <StyledRegister>
+        <StyledRegisterTitle>Register</StyledRegisterTitle>
         <Form
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
           initialValues={{ remember: true }}
+          style={{ width: "100%" }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          // onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item
+          <StyledInput
             label="Email"
             name="email"
             rules={[{ required: true, message: "Email required" }]}
           >
-            <Input />
-          </Form.Item>
+            <Input placeholder="Please enter an email" />
+          </StyledInput>
 
-          <Form.Item
+          <StyledInput
             label="Countries"
             name="countries"
-            rules={[{ required: false, message: "Pouet" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Companie"
-            name="company"
             rules={[{ required: false, message: "Pouet" }]}
           >
             <Select
               mode="multiple"
               allowClear
               style={{ width: "100%" }}
-              placeholder="Please select"
-              defaultValue={["en", "fr", "es"]}
-              onChange={handleChange}
-            />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={() => validateForm(email, countries, company)}
+              placeholder="Please select a country"
             >
+              <Select.Option value="fr">FR</Select.Option>
+              <Select.Option value="en">EN</Select.Option>
+            </Select>
+          </StyledInput>
+          <StyledInput
+            label="Company"
+            name="company"
+            rules={[{ required: false, message: "Pouet" }]}
+          >
+            <Input placeholder="Please enter your company" />
+          </StyledInput>
+          <Form.Item
+            wrapperCol={{ span: 16 }}
+            style={{ justifyContent: "center" }}
+          >
+            <Button type="primary" htmlType="submit" loading={isLoading}>
               Submit
             </Button>
           </Form.Item>
+          <NavLink to="/login">Already have an account</NavLink>
         </Form>
-      </StyledLogin>
+      </StyledRegister>
     </StyledWrapper>
   );
 };
 
-export default Login;
+export default Register;
