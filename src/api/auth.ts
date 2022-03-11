@@ -31,11 +31,12 @@ export const loginUser = async(email: string) => {
 }
 
 export const userAccount = async() => {
-    return await fetch(`${API_URL}/profile`, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-    });
+  return await fetch(`${API_URL}/profile`, {
+    method: "GET",
+    headers: {
+      "Authorization": "",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
 }
